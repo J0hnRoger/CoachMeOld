@@ -18,9 +18,10 @@ var app;
             DashboardController.prototype.getCurrentWorker = function () {
                 var _this = this;
                 var userTestId = "55eff9a4f835d9b85836c59d";
-                return this.workoutservice.getCurrentWorker(userTestId)
+                return this.workoutservice.getWorker(userTestId)
                     .then(function (data) {
                     _this.currentWorker = data;
+                    _this.currentWorker.getNextWorkout();
                 });
             };
             DashboardController.$inject = ['$q', 'workoutservice', 'logger'];

@@ -3,7 +3,7 @@ namespace app.widgets {
     
     interface IChronoScope {
         current : number;
-        time : number;
+        initialDuration : number;
         reps : number;
         rest : number;
         rounds : number
@@ -13,6 +13,7 @@ namespace app.widgets {
         start() : void;
         stop() : void;
         toggle() : void;
+        whenFinish() : void;
     }
     
     //Usage:
@@ -23,11 +24,11 @@ namespace app.widgets {
         
         templateUrl: string = 'app/widgets/coach-chrono.html';
         restrict: string = 'EA';
-        scope: {} = {
-            'duration': '@',
-            'rounds': '@',
-            'rest': '@',
-            'reps': '@',
+        scope = {
+            'duration': '=',
+            'rounds': '=',
+            'rest': '=',
+            'reps': '=',
             'whenFinish' : '='
         };
         
@@ -37,7 +38,7 @@ namespace app.widgets {
             var stopTime : ng.IPromise<any>;
             var repsMode = scope.reps > 0;
             scope.current = 0;
-            scope.time = scope.duration;
+            scope.initialDuration = scope.duration;
             
             scope.state = {
                 rest : false,
@@ -47,15 +48,14 @@ namespace app.widgets {
             if (!repsMode){
                 scope.start = () => {
                     stopTime = this.$interval(() => {
-                            scope.time = scope.time - 1;
-                            if (scope.time == 0){
-                                
+                            scope.duration = scope.duration - 1;
+                            if (scope.duration == 0){
                                 if (scope.state.rest){
-                                    scope.time = scope.duration
+                                    scope.duration = scope.initialDuration;
                                 }
                                 else {
                                   scope.current++;
-                                  scope.time = scope.rest;
+                                  scope.duration = scope.rest;
                                 }
                                 
                                 scope.state.rest = !scope.state.rest;

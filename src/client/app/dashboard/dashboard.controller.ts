@@ -9,7 +9,8 @@ namespace app.dashboard {
     export class DashboardController implements IDashboardVm {
         title: string = 'Coach Me';
         currentWorker : app.domain.Worker;
-        
+        workout : app.domain.Workout;
+
         static $inject: Array<string> = ['$q', 'workoutservice', 'logger'];
         constructor(private $q: ng.IQService,
             private workoutservice: app.core.WorkoutService,
@@ -17,16 +18,16 @@ namespace app.dashboard {
             var promises = [];
             this.getCurrentWorker();
             this.$q.all(promises).then(function () {
-                
                 logger.info('Activated Dashboard View');
             });
         }
 
         getCurrentWorker() {
             var userTestId = "55eff9a4f835d9b85836c59d";
-            return this.workoutservice.getCurrentWorker(userTestId)
+            return this.workoutservice.getWorker(userTestId)
                 .then((data) => {
                     this.currentWorker = data;
+                   this.currentWorker.getNextWorkout();
                 });
         }
     }

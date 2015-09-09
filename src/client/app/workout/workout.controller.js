@@ -1,16 +1,23 @@
 var app;
 (function (app) {
     var workout;
-    (function (workout) {
+    (function (workout_1) {
         var WorkoutController = (function () {
-            function WorkoutController(logger) {
+            function WorkoutController(logger, workoutservice) {
                 var _this = this;
                 this.logger = logger;
                 this.finished = function () {
                     _this.logger.info("Exercise finished");
                 };
+                if (workoutservice.currentWorker != undefined) {
+                    workoutservice.loadNextWorkout()
+                        .then(function (workout) {
+                        _this.CurrentWorkout = workoutservice.currentWorker.currentWorkout;
+                        _this.CurrentExercise = _this.CurrentWorkout.getCurrentExercise();
+                    });
+                }
             }
-            WorkoutController.$inject = ['logger'];
+            WorkoutController.$inject = ['logger', 'workoutservice'];
             return WorkoutController;
         })();
         angular.module('app.workout')

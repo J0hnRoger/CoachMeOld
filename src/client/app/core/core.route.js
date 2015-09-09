@@ -12,11 +12,10 @@ var app;
             .module('app.core')
             .config(configureStates)
             .run(appRun);
-        appRun.$inject = ['RouterHelper', '$httpBackend'];
-        function appRun(RouterHelper, $httpBackend) {
-            $httpBackend.whenGET('/*.html*/').passThrough();
+        appRun.$inject = ['RouterHelper'];
+        function appRun(RouterHelper) {
         }
-        configureStates.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider', '$provide'];
+        configureStates.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider'];
         /* @ngInject */
         function configureStates($stateProvider, $locationProvider, $urlRouterProvider, $provide) {
             var otherwise = '/404';
@@ -26,7 +25,6 @@ var app;
             });
             $locationProvider.html5Mode(true);
             $urlRouterProvider.otherwise(otherwise);
-            $provide.decorator('$httpBackend', angular.mock.e2e.$httpBackendDecorator);
         }
         function getStates() {
             return [

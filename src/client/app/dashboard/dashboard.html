@@ -1,6 +1,5 @@
 <section id="dashboard-view" class="mainbar">
     <div class="row">
-        <h4>currentUser : {{vm.currentWorker.id}}</h4>
     </div>
     <section class="matter">
         <div class="container">
@@ -30,8 +29,9 @@
                              rightText="8 Septembre 2015"
                              allow-collapse="true"></div>
                         <div class="widget-content text-center text-info">
-                            <h3>Haut du corps</h3>
-                            <button>Commencer à se déchirer</button>
+                            <h3>{{vm.currentWorker.currentWorkout.getFormatedDate() }}</h3>
+                            <h5>{{vm.currentWorker.currentWorkout.name}}</h5>
+                            <a class="btn btn-default" href="/workout">Commencer à se déchirer</a>
                         </div>
                         <div class="widget-foot">
                             <div class="clearfix"></div>

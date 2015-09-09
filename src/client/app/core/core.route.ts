@@ -10,13 +10,12 @@ namespace app.core {
         .module('app.core')
         .config(configureStates)
         .run(appRun);
-        
-    appRun.$inject = ['RouterHelper', '$httpBackend'];
-    function appRun(RouterHelper: blocks.router.IRouterHelper, $httpBackend : any) { 
-        $httpBackend.whenGET('/*.html*/').passThrough();
+
+    appRun.$inject = ['RouterHelper'];
+    function appRun(RouterHelper: blocks.router.IRouterHelper) {
     }
 
-    configureStates.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider', '$provide'];
+    configureStates.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider'];
     /* @ngInject */
     function configureStates($stateProvider: ng.ui.IStateProvider,
         $locationProvider: ng.ILocationProvider,
@@ -29,8 +28,7 @@ namespace app.core {
         });
         $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise(otherwise);
-        
-        $provide.decorator('$httpBackend', angular.mock.e2e.$httpBackendDecorator);
+
     }
 
     function getStates() {

@@ -3,9 +3,9 @@ namespace app.core {
 
     angular
         .module('app.core', [
-            'ngSanitize',
+            'ngAnimate', 'ngSanitize',
             'blocks.exception', 'blocks.logger', 'blocks.router',
-            'ui.router', 'ngplus', 'ngMockE2E'
+            'ui.router', 'ngplus'
         ]);
-     
+
 }

@@ -1,5 +1,5 @@
 <div ng-click="toggle()" class="panel panel-default panel-chrono" ng-class="{ 'panel-chrono-work' : !state.rest, 'panel-chrono-rest' : state.rest }">
-	<h1>{{time}}<i class="fa" ng-class="{ 'fa-smile-o' : state.rest, 'fa-bolt' : !state.rest }"></i></h1>
+	<h1>{{duration}}<i class="fa" ng-class="{ 'fa-smile-o' : state.rest, 'fa-bolt' : !state.rest }"></i></h1>
 	<span class="label label-success">
 		{{current}} / {{rounds}}
 	</span>

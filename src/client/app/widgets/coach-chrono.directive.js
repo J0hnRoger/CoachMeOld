@@ -14,17 +14,17 @@ var app;
                 this.templateUrl = 'app/widgets/coach-chrono.html';
                 this.restrict = 'EA';
                 this.scope = {
-                    'duration': '@',
-                    'rounds': '@',
-                    'rest': '@',
-                    'reps': '@',
+                    'duration': '=',
+                    'rounds': '=',
+                    'rest': '=',
+                    'reps': '=',
                     'whenFinish': '='
                 };
                 this.link = function (scope, element, attrs) {
                     var stopTime;
                     var repsMode = scope.reps > 0;
                     scope.current = 0;
-                    scope.time = scope.duration;
+                    scope.initialDuration = scope.duration;
                     scope.state = {
                         rest: false,
                         finished: false
@@ -32,14 +32,14 @@ var app;
                     if (!repsMode) {
                         scope.start = function () {
                             stopTime = _this.$interval(function () {
-                                scope.time = scope.time - 1;
-                                if (scope.time == 0) {
+                                scope.duration = scope.duration - 1;
+                                if (scope.duration == 0) {
                                     if (scope.state.rest) {
-                                        scope.time = scope.duration;
+                                        scope.duration = scope.initialDuration;
                                     }
                                     else {
                                         scope.current++;
-                                        scope.time = scope.rest;
+                                        scope.duration = scope.rest;
                                     }
                                     scope.state.rest = !scope.state.rest;
                                     //emettre sonnerie

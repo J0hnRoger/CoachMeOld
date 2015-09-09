@@ -1,11 +1,27 @@
 <section class="mainbar">
     <section class="matter">
-        <div class="container">
+        <div class="container" ng-hide="vm.CurrentWorkout">
+        <h5>C'est calme par ici ... pour l'instant</h5>
+        <a href="/" class="btn btn-default">Choisir un entrainement</a>
+        </div>
+        <div class="container" ng-show="vm.CurrentWorkout">
             <div class="row">
                 <div class="widget">
                     <div ht-widget-header title="{{vm.title}}"></div>
                     <div class="widget-content user">
-                        <coach-chrono duration="2" rounds="2" rest="2" when-finish="vm.finished"/>
+                        <div class="row">
+                            <div class="col-sm-4 col-sm-offset-4"><h4>{{vm.CurrentExercise.name}} <span class="label label-default">{{vm.CurrentExercise.familly}}</span></h4></div>
+                        </div>
+                        <coach-chrono
+                            duration="3"
+                            rounds="vm.CurrentExercise.rounds"
+                            rest="vm.CurrentExercise.rest" 
+                            when-finish="vm.finished"/>
+                    </div>
+                    <div class="exercises">
+                        <ul ng-repeat="exercise in vm.CurrentWorkout.exercises | orderBy: 'id' ">
+                            <li>{{exercise.name}} <span class="label label-default">{{exercise.familly}}</span></li>
+                        </ul>
                     </div>
                     <div class="widget-foot">
                         <div class="clearfix"></div>
@@ -15,3 +31,5 @@
         </div>
     </section>
 </section>
+
+

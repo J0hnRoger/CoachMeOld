@@ -4,30 +4,42 @@ var app;
     (function (core) {
         'use strict';
         var WorkoutService = (function () {
-            function WorkoutService($http, $q, exception, logger, coachMeUrl) {
+            function WorkoutService($http, $q, exception, logger) {
                 var _this = this;
                 this.$http = $http;
                 this.$q = $q;
                 this.exception = exception;
                 this.logger = logger;
-                this.coachMeUrl = coachMeUrl;
-                this.getCurrentWorker = function (userId) {
-                    return _this.$http.get(_this.coachMeUrl + '/api/cobject/v1/users/' + userId + '?populate=true')
+                this.getWorker = function (userId) {
+                    return _this.$http.get('/api/cobject/v1/users/' + userId + '?populate=true')
                         .then(_this.success)
                         .catch(_this.fail);
                 };
                 this.success = function (response) {
-                    var worker = new app.domain.Worker(response.data);
-                    return worker;
+                    _this.currentWorker = new app.domain.Worker(response.data);
+                    return _this.currentWorker;
                 };
                 this.fail = function (error) {
                     var msg = error.data.description;
-                    var reason = 'query for get current worker failed.';
+                    var reason = 'query for get current workout failed.';
                     _this.exception.catcher(msg)(reason);
                     return _this.$q.reject(msg);
                 };
+                this.loadNextWorkout = function () {
+                    var defer = _this.$q.defer();
+                    _this.$http.get('/api/cobject/v1/seance/' + _this.currentWorker.getNextWorkout().id + '?populate=true')
+                        .then(function (response) {
+                        _this.currentWorker.currentWorkout = new app.domain.Workout(response.data);
+                        defer.resolve(_this.currentWorker.currentWorkout);
+                    });
+                    return defer.promise;
+                };
+                this.successWorkout = function (response) {
+                    _this.currentWorker.currentWorkout = new app.domain.Workout(response.data);
+                    return _this.currentWorker;
+                };
             }
-            WorkoutService.$inject = ['$http', '$q', 'exception', 'logger', 'coachMeUrl'];
+            WorkoutService.$inject = ['$http', '$q', 'exception', 'logger'];
             return WorkoutService;
         })();
         core.WorkoutService = WorkoutService;
