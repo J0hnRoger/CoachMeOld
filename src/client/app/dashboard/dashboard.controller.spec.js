@@ -1,22 +1,22 @@
 /* jshint -W117, -W030 */
 describe('DashboardController', function() {
     var controller;
-    var people = mockData.getMockPeople();
+     var stamplayUser = mockData.getStamPlayUser();
 
-    beforeEach(function() {
+     beforeEach(function() {
         bard.appModule('app.dashboard');
-        bard.inject('$controller', '$log', '$q', '$rootScope', 'dataservice');
+        bard.inject('$controller', '$log', '$q', '$rootScope', 'workoutservice');
     });
 
     beforeEach(function () {
-        sinon.stub(dataservice, 'getPeople').returns($q.when(people));
+        sinon.stub(workoutservice, 'getCurrentWorker').returns($q.when(stamplayUser));
         controller = $controller('DashboardController');
         $rootScope.$apply();
     });
 
     bard.verifyNoOutstandingHttpRequests();
 
-    describe('Dashboard controller', function() {
+   describe('Dashboard controller', function() {
         it('should be created successfully', function () {
             expect(controller).to.be.defined;
         });

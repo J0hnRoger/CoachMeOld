@@ -2,45 +2,32 @@ namespace app.dashboard {
     'use strict';
 
     interface IDashboardVm {
-        news: { title: string, description: string };
-        messageCount: number;
-        people: Array<any>;
         title: string;
-        getMessageCount: () => ng.IPromise<number>;
-        getPeople: () => ng.IPromise<Array<any>>;
+        currentWorker : app.domain.Worker;
     }
 
     export class DashboardController implements IDashboardVm {
-        static $inject: Array<string> = ['$q', 'dataservice', 'logger'];
+        title: string = 'Coach Me';
+        currentWorker : app.domain.Worker;
+        
+        static $inject: Array<string> = ['$q', 'workoutservice', 'logger'];
         constructor(private $q: ng.IQService,
-            private dataservice: app.core.IDataService,
+            private workoutservice: app.core.WorkoutService,
             private logger: blocks.logger.Logger) {
-            var promises = [this.getMessageCount(), this.getPeople()];
+            var promises = [];
+            this.getCurrentWorker();
             this.$q.all(promises).then(function () {
+                
                 logger.info('Activated Dashboard View');
             });
         }
 
-        news = {
-            title: 'helloworld',
-            description: 'Hot Towel Angular is a SPA template for Angular developers.'
-        };
-        messageCount: number = 0;
-        people: Array<any> = [];
-        title: string = 'Dashboard';
-
-        getMessageCount() {
-            return this.dataservice.getMessageCount().then((data) => {
-                this.messageCount = data;
-                return this.messageCount;
-            });
-        }
-
-        getPeople() {
-            return this.dataservice.getPeople().then((data) => {
-                this.people = data;
-                return this.people;
-            });
+        getCurrentWorker() {
+            var userTestId = "55eff9a4f835d9b85836c59d";
+            return this.workoutservice.getCurrentWorker(userTestId)
+                .then((data) => {
+                    this.currentWorker = data;
+                });
         }
     }
 

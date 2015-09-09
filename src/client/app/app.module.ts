@@ -8,5 +8,5 @@ namespace app {
         'app.dashboard',
         'app.workout',
         'app.layout'
-    ]);
+    ])
 }

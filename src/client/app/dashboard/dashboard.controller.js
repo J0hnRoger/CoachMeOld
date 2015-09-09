@@ -4,37 +4,26 @@ var app;
     (function (dashboard) {
         'use strict';
         var DashboardController = (function () {
-            function DashboardController($q, dataservice, logger) {
+            function DashboardController($q, workoutservice, logger) {
                 this.$q = $q;
-                this.dataservice = dataservice;
+                this.workoutservice = workoutservice;
                 this.logger = logger;
-                this.news = {
-                    title: 'helloworld',
-                    description: 'Hot Towel Angular is a SPA template for Angular developers.'
-                };
-                this.messageCount = 0;
-                this.people = [];
-                this.title = 'Dashboard';
-                var promises = [this.getMessageCount(), this.getPeople()];
+                this.title = 'Coach Me';
+                var promises = [];
+                this.getCurrentWorker();
                 this.$q.all(promises).then(function () {
                     logger.info('Activated Dashboard View');
                 });
             }
-            DashboardController.prototype.getMessageCount = function () {
+            DashboardController.prototype.getCurrentWorker = function () {
                 var _this = this;
-                return this.dataservice.getMessageCount().then(function (data) {
-                    _this.messageCount = data;
-                    return _this.messageCount;
+                var userTestId = "55eff9a4f835d9b85836c59d";
+                return this.workoutservice.getCurrentWorker(userTestId)
+                    .then(function (data) {
+                    _this.currentWorker = data;
                 });
             };
-            DashboardController.prototype.getPeople = function () {
-                var _this = this;
-                return this.dataservice.getPeople().then(function (data) {
-                    _this.people = data;
-                    return _this.people;
-                });
-            };
-            DashboardController.$inject = ['$q', 'dataservice', 'logger'];
+            DashboardController.$inject = ['$q', 'workoutservice', 'logger'];
             return DashboardController;
         })();
         dashboard.DashboardController = DashboardController;

@@ -5,9 +5,9 @@ var app;
         'use strict';
         angular
             .module('app.core', [
-            'ngAnimate', 'ngSanitize',
+            'ngSanitize',
             'blocks.exception', 'blocks.logger', 'blocks.router',
-            'ui.router', 'ngplus'
+            'ui.router', 'ngplus', 'ngMockE2E'
         ]);
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));

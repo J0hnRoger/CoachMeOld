@@ -6,5 +6,6 @@ namespace app.core {
     angular
         .module('app.core')
         .constant('toastr', toastr)
-        .constant('moment', moment);
+        .constant('moment', moment)
+        .constant('coachMeUrl', 'https://coachcoach.stamplayapp.com');
 }

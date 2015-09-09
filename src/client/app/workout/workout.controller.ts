@@ -1,8 +1,8 @@
 namespace app.workout {
 	class WorkoutController {
+		CurrentWorkout : app.domain.Workout;
 		static $inject : Array<string> = ['logger'];
 		constructor(public logger: blocks.logger.Logger){
-			
 		}
 		
 		finished = () =>  {
