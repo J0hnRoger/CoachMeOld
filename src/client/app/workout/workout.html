@@ -7,21 +7,29 @@
         <div class="container" ng-show="vm.CurrentWorkout">
             <div class="row">
                 <div class="widget">
-                    <div ht-widget-header title="{{vm.title}}"></div>
+                    <div ht-widget-header title="{{vm.CurrentExercise.name}}"></div>
                     <div class="widget-content user">
                         <div class="row">
-                            <div class="col-sm-4 col-sm-offset-4"><h4>{{vm.CurrentExercise.name}} <span class="label label-default">{{vm.CurrentExercise.familly}}</span></h4></div>
+                            <div class="col-sm-4 col-sm-offset-4">
+                                <h4>{{vm.CurrentExercise.name}}
+                                    <span class="label label-default" ng-style="{'background-color' : vm.CurrentExercise.familly.color}">{{vm.CurrentExercise.familly.name}}</span>
+                                </h4>
+                            </div>
                         </div>
                         <coach-chrono
-                            duration="3"
+                            duration="3" 
                             rounds="vm.CurrentExercise.rounds"
-                            rest="vm.CurrentExercise.rest" 
-                            when-finish="vm.finished"/>
-                    </div>
-                    <div class="exercises">
-                        <ul ng-repeat="exercise in vm.CurrentWorkout.exercises | orderBy: 'id' ">
-                            <li>{{exercise.name}} <span class="label label-default">{{exercise.familly}}</span></li>
-                        </ul>
+                            rest="4" 
+                            rest-after="2"
+                            when-finish="vm.finished"> </coach-chrono>
+                            <div class="clearfix"></div>
+                        <div class="exercises">
+                            <ul class="frise">
+                                <li ng-repeat="exercise in vm.CurrentWorkout.exercises | orderBy: 'id' " ng-class="{ 'exercise-done' : exercise.done}">
+                                    {{exercise.name}} 
+                                    <span class="label label-default" ng-style="{'background-color' : exercise.familly.color}">{{exercise.familly.name}}</span></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="widget-foot">
                         <div class="clearfix"></div>

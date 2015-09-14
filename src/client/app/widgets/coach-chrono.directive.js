@@ -17,6 +17,7 @@ var app;
                     'duration': '=',
                     'rounds': '=',
                     'rest': '=',
+                    'restAfter': '=',
                     'reps': '=',
                     'whenFinish': '='
                 };
@@ -27,6 +28,7 @@ var app;
                     scope.initialDuration = scope.duration;
                     scope.state = {
                         rest: false,
+                        lastRest: false,
                         finished: false
                     };
                     if (!repsMode) {
@@ -43,14 +45,21 @@ var app;
                                     }
                                     scope.state.rest = !scope.state.rest;
                                     //emettre sonnerie
-                                    if (scope.current == scope.rounds) {
+                                    //Finished conditions
+                                    if (scope.state.lastRest) {
                                         _this.$interval.cancel(stopTime);
                                         scope.state.finished = true;
                                         scope.whenFinish();
                                     }
+                                    if (scope.current == scope.rounds) {
+                                        scope.duration = scope.restAfter;
+                                        scope.state.lastRest = true;
+                                    }
                                 }
                             }, 1000);
                         };
+                        function fireLastRest() {
+                        }
                         scope.stop = function () {
                             _this.$interval.cancel(stopTime);
                             stopTime = undefined;

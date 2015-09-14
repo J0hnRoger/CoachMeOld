@@ -14,18 +14,22 @@ var app;
                 if (data['exercices'] != undefined) {
                     this.exercises = [];
                     angular.forEach(data['exercices'], function (exercise) {
-                        var exercise = new Exercise(exercise);
-                        _this.exercises.push(exercise);
+                        var newExercise = new Exercise(exercise);
+                        _this.exercises.push(newExercise);
                     });
+                    this.currentExercise = this.exercises[0];
                 }
+                if (data['description'] != undefined)
+                    this.description = data['description'];
                 if (data['name'] != undefined)
                     this.name = data['name'];
             }
-            Workout.prototype.getCurrentExercise = function () {
-                var exercise = this.exercises[this.currentExerciseIndex];
+            Workout.prototype.getNextExercise = function () {
+                this.exercises[this.currentExerciseIndex].done = true;
                 if (this.currentExerciseIndex < this.exercises.length)
                     this.currentExerciseIndex++;
-                return exercise;
+                this.currentExercise = this.exercises[this.currentExerciseIndex];
+                return this.currentExercise;
             };
             ;
             Workout.prototype.getFormatedDate = function () {
@@ -35,15 +39,31 @@ var app;
             return Workout;
         })();
         domain.Workout = Workout;
+        var Familly = (function () {
+            function Familly(name) {
+                this.name = name;
+                this.color = Familly.colors[name];
+            }
+            Familly.colors = {
+                "Echauffement": "#52b9e9",
+                "Bas du corps": "#43c83c",
+                "Entrainement poitrine": "#ED5565",
+                "Entrainement ventre": "#f88529"
+            };
+            return Familly;
+        })();
+        domain.Familly = Familly;
         var Exercise = (function () {
             function Exercise(data) {
                 this.id = data._id;
                 this.name = data.name;
-                this.familly = data.familly;
+                this.familly = new Familly(data.familly);
                 this.duration = data.duration;
                 this.reps = data.reps;
                 this.rounds = data.rounds;
                 this.rest = data.rest;
+                this.restAfter = data.restAfter;
+                this.done = false;
             }
             return Exercise;
         })();

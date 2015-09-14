@@ -6,9 +6,10 @@ namespace app.widgets {
         initialDuration : number;
         reps : number;
         rest : number;
+        restAfter : number;
         rounds : number
         duration : number;
-        state : { rest : boolean, finished : boolean}
+        state : { rest : boolean, lastRest : boolean, finished : boolean}
         
         start() : void;
         stop() : void;
@@ -28,6 +29,7 @@ namespace app.widgets {
             'duration': '=',
             'rounds': '=',
             'rest': '=',
+            'restAfter' : '=',
             'reps': '=',
             'whenFinish' : '='
         };
@@ -36,12 +38,13 @@ namespace app.widgets {
         
         link = (scope : IChronoScope, element : ng.IAugmentedJQuery, attrs : ng.IAttributes ) => {
             var stopTime : ng.IPromise<any>;
-            var repsMode = scope.reps > 0;
+            var repsMode : boolean = scope.reps > 0;
             scope.current = 0;
             scope.initialDuration = scope.duration;
             
             scope.state = {
                 rest : false,
+                lastRest : false,                
                 finished : false
             };
             
@@ -60,13 +63,25 @@ namespace app.widgets {
                                 
                                 scope.state.rest = !scope.state.rest;
                                 //emettre sonnerie
-                                if (scope.current == scope.rounds){
+                                //Finished conditions
+                                if (scope.state.lastRest)
+                                {
                                     this.$interval.cancel(stopTime);
                                     scope.state.finished = true;
                                     scope.whenFinish();                                    
                                 }
+                                
+                                if (scope.current == scope.rounds)
+                                {
+                                    scope.duration = scope.restAfter;
+                                    scope.state.lastRest = true;
+                                }
                             }
                         }, 1000); 
+                }
+                
+                function fireLastRest() {
+                    
                 }
                 
                 scope.stop = () => {

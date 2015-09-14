@@ -6,14 +6,16 @@ var app;
             function WorkoutController(logger, workoutservice) {
                 var _this = this;
                 this.logger = logger;
+                this.workoutservice = workoutservice;
                 this.finished = function () {
+                    _this.CurrentExercise = _this.CurrentWorkout.getNextExercise();
                     _this.logger.info("Exercise finished");
                 };
                 if (workoutservice.currentWorker != undefined) {
                     workoutservice.loadNextWorkout()
                         .then(function (workout) {
                         _this.CurrentWorkout = workoutservice.currentWorker.currentWorkout;
-                        _this.CurrentExercise = _this.CurrentWorkout.getCurrentExercise();
+                        _this.CurrentExercise = _this.CurrentWorkout.currentExercise;
                     });
                 }
             }

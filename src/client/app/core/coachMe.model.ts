@@ -7,6 +7,8 @@ namespace app.domain {
 		date : Date;
 		currentExerciseIndex:number = 0;
 		done : boolean = false;
+		description : string;
+		currentExercise : Exercise;
 		
 		constructor(data : any){
 			if (data['_id'] != undefined)
@@ -16,19 +18,24 @@ namespace app.domain {
 			if (data['exercices'] != undefined){
                 this.exercises = [];
                 angular.forEach(data['exercices'], (exercise : any) => {
-                    var exercise = new Exercise(exercise);
-                    this.exercises.push(exercise);
+                    var newExercise : Exercise = new Exercise(exercise);
+                    this.exercises.push(newExercise);
                 });
+				this.currentExercise = this.exercises[0];
             }
+			if (data['description'] != undefined)
+				this.description = data['description'];
 			if (data['name'] != undefined)
 				this.name = data['name'];
 		}
 		
-		getCurrentExercise() {
-			var exercise = this.exercises[this.currentExerciseIndex];
+		getNextExercise() {
+			this.exercises[this.currentExerciseIndex].done = true;
 			if (this.currentExerciseIndex < this.exercises.length)
 				this.currentExerciseIndex++;
-			return exercise;
+			this.currentExercise = this.exercises[this.currentExerciseIndex];
+			
+			return this.currentExercise;
 		};
 		
         getFormatedDate (){
@@ -36,24 +43,42 @@ namespace app.domain {
             return moment.format('D MMMM YYYY');
         }
 	}
-
+	
+	export class Familly {
+		static colors : any = {
+			"Echauffement" : "#52b9e9",
+			"Bas du corps" : "#43c83c",
+			"Entrainement poitrine" : "#ED5565",
+			"Entrainement ventre" : "#f88529"
+		}
+		color : string;
+		constructor(public name : string){
+			this.color = Familly.colors[name];
+		}	
+	}
+	
 	export class Exercise {
-		public familly : string;
+		public familly : Familly;
 		public id :string;
 		public name : number;
 		public duration : number;
 		public reps : number;
 		public rounds : number;
 		public rest : number;
+		public restAfter : number
+		public done : boolean;
 		
 		constructor (data : any) {
 			this.id = data._id;
 			this.name = data.name;
-			this.familly = data.familly;
+			this.familly = new Familly(data.familly);
 			this.duration = data.duration;
 			this.reps = data.reps ;
 			this.rounds = data.rounds;
 			this.rest = data.rest ;
+			this.restAfter = data.restAfter;
+			this.done = false;
+			 
 		}
 	}
 
