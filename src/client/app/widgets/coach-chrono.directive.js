@@ -18,59 +18,67 @@ var app;
                     'rounds': '=',
                     'rest': '=',
                     'restAfter': '=',
-                    'reps': '=',
-                    'whenFinish': '='
+                    'exercise': '=',
+                    'whenFinish': '=',
+                    'start': '='
                 };
                 this.link = function (scope, element, attrs) {
                     var stopTime;
-                    var repsMode = scope.reps > 0;
-                    scope.current = 0;
-                    scope.initialDuration = scope.duration;
-                    scope.state = {
-                        rest: false,
-                        lastRest: false,
-                        finished: false
-                    };
-                    if (!repsMode) {
-                        scope.start = function () {
-                            stopTime = _this.$interval(function () {
-                                scope.duration = scope.duration - 1;
-                                if (scope.duration == 0) {
-                                    if (scope.state.rest) {
-                                        scope.duration = scope.initialDuration;
-                                    }
-                                    else {
-                                        scope.current++;
-                                        scope.duration = scope.rest;
-                                    }
-                                    scope.state.rest = !scope.state.rest;
-                                    //emettre sonnerie
-                                    //Finished conditions
-                                    if (scope.state.lastRest) {
-                                        _this.$interval.cancel(stopTime);
-                                        scope.state.finished = true;
-                                        scope.whenFinish();
-                                    }
-                                    if (scope.current == scope.rounds) {
-                                        scope.duration = scope.restAfter;
-                                        scope.state.lastRest = true;
-                                    }
+                    scope.start = function () {
+                        if (stopTime != undefined)
+                            return;
+                        stopTime = _this.$interval(function () {
+                            scope.exercise.duration = scope.exercise.duration - 1;
+                            if (scope.exercise.duration == 0) {
+                                if (scope.state.rest) {
+                                    scope.exercise.duration = scope.initialDuration;
                                 }
-                            }, 1000);
+                                else {
+                                    scope.current++;
+                                    scope.exercise.duration = scope.exercise.rest;
+                                }
+                                scope.state.rest = !scope.state.rest;
+                                //emettre sonnerie
+                                //Finished conditions
+                                if (scope.state.lastRest) {
+                                    _this.$interval.cancel(stopTime);
+                                    scope.state.finished = true;
+                                    stopTime = null;
+                                    scope.whenFinish();
+                                }
+                                if (scope.current == scope.exercise.rounds) {
+                                    scope.exercise.duration = scope.exercise.restAfter;
+                                    scope.state.lastRest = true;
+                                }
+                            }
+                        }, 1000);
+                    };
+                    scope.stop = function () {
+                        _this.$interval.cancel(stopTime);
+                        stopTime = undefined;
+                    };
+                    scope.toggle = function () {
+                        if (angular.isDefined(stopTime))
+                            scope.stop();
+                        else
+                            scope.start();
+                    };
+                    scope.$watch("exercise", function (newExercise) {
+                        if (newExercise == undefined)
+                            return;
+                        var repsMode = scope.reps > 0;
+                        scope.current = 0;
+                        scope.initialDuration = newExercise.duration;
+                        scope.state = {
+                            rest: false,
+                            lastRest: false,
+                            finished: false
                         };
-                        function fireLastRest() {
+                        scope.current = 0;
+                        if (!repsMode) {
+                            scope.start();
                         }
-                        scope.stop = function () {
-                            _this.$interval.cancel(stopTime);
-                            stopTime = undefined;
-                        };
-                        scope.toggle = function () {
-                            if (angular.isDefined(stopTime))
-                                scope.stop();
-                            else
-                                scope.start();
-                        };
-                    }
+                    });
                 };
             }
             CoachChrono.factory = function () {

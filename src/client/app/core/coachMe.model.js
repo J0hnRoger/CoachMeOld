@@ -31,7 +31,6 @@ var app;
                 this.currentExercise = this.exercises[this.currentExerciseIndex];
                 return this.currentExercise;
             };
-            ;
             Workout.prototype.getFormatedDate = function () {
                 var moment = window.moment(this.date);
                 return moment.format('D MMMM YYYY');

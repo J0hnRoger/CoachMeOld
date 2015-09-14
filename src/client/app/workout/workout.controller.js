@@ -9,13 +9,26 @@ var app;
                 this.workoutservice = workoutservice;
                 this.finished = function () {
                     _this.CurrentExercise = _this.CurrentWorkout.getNextExercise();
-                    _this.logger.info("Exercise finished");
+                    if (_this.CurrentExercise == undefined) {
+                        _this.logger.info("Exercise finished");
+                        _this.CurrentWorkout.isFinished = true;
+                    }
+                    else {
+                        _this.CurrentExercise.duration = 1;
+                        _this.CurrentExercise.rest = 1;
+                        _this.CurrentExercise.restAfter = 1;
+                        _this.logger.info("Exercise finished");
+                    }
                 };
                 if (workoutservice.currentWorker != undefined) {
                     workoutservice.loadNextWorkout()
                         .then(function (workout) {
                         _this.CurrentWorkout = workoutservice.currentWorker.currentWorkout;
                         _this.CurrentExercise = _this.CurrentWorkout.currentExercise;
+                        _this.CurrentExercise.duration = 2;
+                        _this.CurrentExercise.rest = 1;
+                        _this.CurrentExercise.restAfter = 1;
+                        _this.startChrono();
                     });
                 }
             }

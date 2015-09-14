@@ -4,7 +4,7 @@
         <h5>C'est calme par ici ... pour l'instant</h5>
         <a href="/" class="btn btn-default">Choisir un entrainement</a>
         </div>
-        <div class="container" ng-show="vm.CurrentWorkout">
+        <div class="container" ng-show="vm.CurrentWorkout && !vm.CurrentWorkout.isFinished">
             <div class="row">
                 <div class="widget">
                     <div ht-widget-header title="{{vm.CurrentExercise.name}}"></div>
@@ -17,16 +17,15 @@
                             </div>
                         </div>
                         <coach-chrono
-                            duration="3" 
+                            exercise="vm.CurrentExercise"
+                            start="vm.startChrono"
                             rounds="vm.CurrentExercise.rounds"
-                            rest="4" 
-                            rest-after="2"
                             when-finish="vm.finished"> </coach-chrono>
                             <div class="clearfix"></div>
                         <div class="exercises">
                             <ul class="frise">
                                 <li ng-repeat="exercise in vm.CurrentWorkout.exercises | orderBy: 'id' " ng-class="{ 'exercise-done' : exercise.done}">
-                                    {{exercise.name}} 
+                                    {{exercise.name}}
                                     <span class="label label-default" ng-style="{'background-color' : exercise.familly.color}">{{exercise.familly.name}}</span></li>
                             </ul>
                         </div>
@@ -36,6 +35,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="container" ng-show="vm.CurrentWorkout.isFinished">
+            <h5>Good Job!!!</h5>
+            <a href="/" class="btn btn-success">Douche! (et retour à la page d'accueil)</a>
         </div>
     </section>
 </section>

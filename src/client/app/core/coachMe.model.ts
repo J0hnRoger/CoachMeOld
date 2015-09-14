@@ -9,7 +9,7 @@ namespace app.domain {
 		done : boolean = false;
 		description : string;
 		currentExercise : Exercise;
-		
+
 		constructor(data : any){
 			if (data['_id'] != undefined)
 				this.id = data['_id'];
@@ -28,22 +28,22 @@ namespace app.domain {
 			if (data['name'] != undefined)
 				this.name = data['name'];
 		}
-		
+
 		getNextExercise() {
 			this.exercises[this.currentExerciseIndex].done = true;
 			if (this.currentExerciseIndex < this.exercises.length)
 				this.currentExerciseIndex++;
 			this.currentExercise = this.exercises[this.currentExerciseIndex];
-			
+
 			return this.currentExercise;
-		};
-		
+		}
+
         getFormatedDate (){
             var moment = window.moment(this.date);
             return moment.format('D MMMM YYYY');
         }
 	}
-	
+
 	export class Familly {
 		static colors : any = {
 			"Echauffement" : "#52b9e9",
@@ -54,9 +54,9 @@ namespace app.domain {
 		color : string;
 		constructor(public name : string){
 			this.color = Familly.colors[name];
-		}	
+		}
 	}
-	
+
 	export class Exercise {
 		public familly : Familly;
 		public id :string;
@@ -67,7 +67,7 @@ namespace app.domain {
 		public rest : number;
 		public restAfter : number
 		public done : boolean;
-		
+
 		constructor (data : any) {
 			this.id = data._id;
 			this.name = data.name;
@@ -78,7 +78,7 @@ namespace app.domain {
 			this.rest = data.rest ;
 			this.restAfter = data.restAfter;
 			this.done = false;
-			 
+
 		}
 	}
 
