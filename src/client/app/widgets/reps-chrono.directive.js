@@ -4,14 +4,14 @@ var app;
     (function (widgets) {
         'use strict';
         //Usage:
-        //<coach-chrono duration="20" rest="25" reps="0" rounds="6"/>
+        //<chrono-reps duration="20" rest="25" reps="0" rounds="6"/>
         // Creates:
-        var DurationChrono = (function () {
-            function DurationChrono(logger, $interval) {
+        var RepsChrono = (function () {
+            function RepsChrono(logger, $interval) {
                 var _this = this;
                 this.logger = logger;
                 this.$interval = $interval;
-                this.templateUrl = 'app/widgets/coach-chrono.html';
+                this.templateUrl = 'app/widgets/reps-chrono.html';
                 this.restrict = 'EA';
                 this.scope = {
                     'exercise': '=',
@@ -19,9 +19,9 @@ var app;
                     'start': '='
                 };
                 this.link = function (scope, element, attrs) {
-                    var stopTime, restTime;
+                    var stopTime;
                     scope.state = {
-                        rest: false,
+                        rest: true,
                         lastRest: false,
                         finished: false
                     };
@@ -29,16 +29,9 @@ var app;
                         if (stopTime != undefined)
                             return;
                         stopTime = _this.$interval(function () {
-                            scope.exercise.duration = scope.exercise.duration - 1;
-                            if (scope.exercise.duration == 0) {
-                                if (scope.state.rest) {
-                                    scope.exercise.duration = scope.initialDuration;
-                                }
-                                else {
-                                    scope.current++;
-                                    scope.exercise.duration = scope.exercise.rest;
-                                }
-                                scope.state.rest = !scope.state.rest;
+                            scope.exercise.rest = scope.exercise.rest - 1;
+                            if (scope.exercise.rest == 0) {
+                                scope.exercise.rest = scope.initialRest;
                                 //emettre sonnerie
                                 //Finished conditions
                                 if (scope.state.lastRest) {
@@ -46,10 +39,12 @@ var app;
                                     scope.state.finished = true;
                                     scope.whenFinish();
                                 }
-                                if (scope.current == scope.exercise.rounds) {
-                                    scope.exercise.duration = scope.exercise.restAfter;
+                                if (scope.current == scope.exercise.rounds - 1) {
+                                    scope.exercise.rest = scope.exercise.restAfter;
                                     scope.state.lastRest = true;
                                 }
+                                scope.state.rest = false;
+                                scope.stop();
                             }
                         }, 1000);
                     };
@@ -63,26 +58,34 @@ var app;
                         else
                             scope.start();
                     };
+                    scope.finishSerie = function () {
+                        scope.current++;
+                        scope.state.rest = true;
+                        scope.start();
+                    };
+                    scope.range = function (n) {
+                        return new Array(n);
+                    };
                     scope.$watch("exercise", function (newExercise) {
-                        if (newExercise == undefined || newExercise.reps > 0)
+                        if (newExercise == undefined || newExercise.reps == 0)
                             return;
                         scope.current = 0;
+                        scope.state.rest = false;
                         scope.state.lastRest = false;
-                        scope.initialDuration = newExercise.duration;
-                        scope.start();
+                        scope.initialRest = newExercise.rest;
                     });
                 };
             }
-            DurationChrono.factory = function () {
-                var directive = function (logger, $interval) { return new DurationChrono(logger, $interval); };
+            RepsChrono.factory = function () {
+                var directive = function (logger, $interval) { return new RepsChrono(logger, $interval); };
                 return directive;
             };
-            DurationChrono.$inject = ['logger', '$interval'];
-            return DurationChrono;
+            RepsChrono.$inject = ['logger', '$interval'];
+            return RepsChrono;
         })();
         angular
             .module('app.widgets')
-            .directive('durationChrono', DurationChrono.factory());
+            .directive('repsChrono', RepsChrono.factory());
     })(widgets = app.widgets || (app.widgets = {}));
 })(app || (app = {}));
-//# sourceMappingURL=coach-chrono.directive.js.map
+//# sourceMappingURL=reps-chrono.directive.js.map

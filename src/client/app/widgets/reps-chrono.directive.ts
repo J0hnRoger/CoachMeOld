@@ -10,16 +10,17 @@ namespace app.widgets {
         start() : void;
         stop() : void;
         toggle() : void;
+        finishSerie() : void;
         whenFinish() : void;
     }
 
     //Usage:
-    //<coach-chrono duration="20" rest="25" reps="0" rounds="6"/>
+    //<chrono-reps duration="20" rest="25" reps="0" rounds="6"/>
     // Creates:
-    class DurationChrono implements ng.IDirective {
+    class RepsChrono implements ng.IDirective {
         static $inject: Array<string> = ['logger', '$interval'];
 
-        templateUrl: string = 'app/widgets/coach-chrono.html';
+        templateUrl: string = 'app/widgets/reps-chrono.html';
         restrict: string = 'EA';
         scope = {
             'exercise' : '=',
@@ -30,10 +31,10 @@ namespace app.widgets {
         constructor(private logger : blocks.logger.Logger, private $interval : ng.IIntervalService) {}
 
         link = (scope : IChronoScope, element : ng.IAugmentedJQuery, attrs : ng.IAttributes ) => {
-            var stopTime : ng.IPromise<any>,
-                restTime : ng.IPromise<any>;
+            var stopTime : ng.IPromise<any>;
+
             scope.state = {
-                rest : false,
+                rest : true,
                 lastRest : false,
                 finished : false
             };
@@ -42,17 +43,10 @@ namespace app.widgets {
                 if (stopTime != undefined)
                     return;
                 stopTime = this.$interval(() => {
-                    scope.exercise.duration = scope.exercise.duration - 1;
-                    if (scope.exercise.duration == 0){
-                        if (scope.state.rest){
-                            scope.exercise.duration = scope.initialDuration;
-                        }
-                        else {
-                            scope.current++;
-                            scope.exercise.duration = scope.exercise.rest;
-                        }
+                    scope.exercise.rest = scope.exercise.rest - 1;
+                    if (scope.exercise.rest == 0){
+                        scope.exercise.rest = scope.initialRest;
 
-                        scope.state.rest = !scope.state.rest;
                         //emettre sonnerie
                         //Finished conditions
                         if (scope.state.lastRest)
@@ -62,11 +56,13 @@ namespace app.widgets {
                             scope.whenFinish();
                         }
 
-                        if (scope.current == scope.exercise.rounds)
+                        if (scope.current == scope.exercise.rounds - 1)
                         {
-                            scope.exercise.duration = scope.exercise.restAfter;
+                            scope.exercise.rest = scope.exercise.restAfter;
                             scope.state.lastRest = true;
                         }
+                        scope.state.rest = false;
+                        scope.stop();
                     }
                 }, 1000);
             };
@@ -83,24 +79,35 @@ namespace app.widgets {
                     scope.start();
             };
 
+            scope.finishSerie = () => {
+                scope.current++;
+                scope.state.rest = true;
+                scope.start();
+            };
+
+            scope.range = (n) => {
+              return new Array(n);
+            };
+
             scope.$watch("exercise", (newExercise) => {
-                if (newExercise == undefined || newExercise.reps > 0)
+                if (newExercise == undefined || newExercise.reps == 0)
                     return;
                 scope.current = 0;
+
+                scope.state.rest = false;
                 scope.state.lastRest = false;
-                scope.initialDuration = newExercise.duration;
-                scope.start();
+                scope.initialRest = newExercise.rest;
             });
         };
 
         static factory(): ng.IDirectiveFactory {
             var directive: ng.IDirectiveFactory =
-              (logger:blocks.logger.Logger, $interval : ng.IIntervalService) => new DurationChrono(logger, $interval);
+                (logger:blocks.logger.Logger, $interval : ng.IIntervalService) => new RepsChrono(logger, $interval);
             return directive;
         }
     }
 
     angular
         .module('app.widgets')
-        .directive('durationChrono', DurationChrono.factory());
+        .directive('repsChrono', RepsChrono.factory());
 }

@@ -35,6 +35,11 @@ var app;
                 var moment = window.moment(this.date);
                 return moment.format('D MMMM YYYY');
             };
+            Workout.prototype.getExercisesScores = function () {
+                return this.exercises.map(function (exercise) {
+                    return { "154484": exercise.lastReps.join('-') };
+                });
+            };
             return Workout;
         })();
         domain.Workout = Workout;
@@ -54,6 +59,14 @@ var app;
         domain.Familly = Familly;
         var Exercise = (function () {
             function Exercise(data) {
+                var _this = this;
+                this.setLastReps = function (strReps) {
+                    //http://stackoverflow.com/questions/15488342/binding-inputs-to-an-array-of-primitives-using-ngrepeat-uneditable-inputs
+                    //Utiliser track by ID > v.1.2.1
+                    _this.lastReps = strReps.split('-').map(function (text) {
+                        return { value: parseInt(text) };
+                    });
+                };
                 this.id = data._id;
                 this.name = data.name;
                 this.familly = new Familly(data.familly);
@@ -97,6 +110,25 @@ var app;
             return Worker;
         })();
         domain.Worker = Worker;
+        var Record = (function () {
+            function Record(data) {
+                this.id = data._id;
+                this.workerId = data.worker;
+                this.exercisesScores = data.exercisesScores;
+                this.workoutDate = data.workout_date;
+                this.workoutPoints = data.workout_points;
+            }
+            return Record;
+        })();
+        domain.Record = Record;
+        var Round = (function () {
+            function Round(index, score) {
+                this.index = index;
+                this.score = score;
+            }
+            return Round;
+        })();
+        domain.Round = Round;
     })(domain = app.domain || (app.domain = {}));
 })(app || (app = {}));
 //# sourceMappingURL=coachMe.model.js.map

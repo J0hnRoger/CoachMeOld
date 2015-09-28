@@ -1,0 +1,20 @@
+<div class="panel panel-default panel-chrono" ng-class="{ 'panel-chrono-work' : !state.rest, 'panel-chrono-rest' : state.rest }">
+    <div ng-hide="state.rest">
+        <span>T'avais fait {{exercise.lastReps[scope.current]}} reps la dernière fois.Fais mieux.</span>
+        <button class="btn btn-default" ng-click="finishSerie()">Fait tes reps et reviens cliquer ici!</button>
+    </div>
+    <div ng-show="state.lastRest && state.rest">
+        <div class="form-group" ng-repeat="reps in exercise.lastReps track by $index">
+            <label>Série {{current}}</label>
+            <input type="number"  class="form-control" ng-model="reps.value" />
+        </div>
+        {{exercise.rounds}}
+    </div>
+    <h1>{{exercise.rest}}<i class="fa" ng-class="{ 'fa-smile-o' : state.rest, 'fa-bolt' : !state.rest }"></i></h1>
+	<span class="label label-success">
+		{{current}} / {{exercise.rounds}}
+	</span>
+</div>
+<div ng-show="state.finished">
+    <h3>Finish!</h3>
+</div>

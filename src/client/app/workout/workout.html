@@ -7,6 +7,7 @@
         <div class="container" ng-show="vm.CurrentWorkout && !vm.CurrentWorkout.isFinished">
             <div class="row">
                 <div class="widget">
+                    {{vm.CurrentWorkout.lastRecords}}
                     <div ht-widget-header title="{{vm.CurrentExercise.name}}"></div>
                     <div class="widget-content user">
                         <div class="row">
@@ -16,11 +17,18 @@
                                 </h4>
                             </div>
                         </div>
-                        <coach-chrono
-                            exercise="vm.CurrentExercise"
-                            start="vm.startChrono"
-                            rounds="vm.CurrentExercise.rounds"
-                            when-finish="vm.finished"> </coach-chrono>
+                        <div ng-if="vm.CurrentExercise.reps == 0 || vm.CurrentExercise.reps == undefined">
+                            <duration-chrono
+                                exercise="vm.CurrentExercise"
+                                start="vm.startChrono"
+                                when-finish="vm.finished"> </duration-chrono>
+                            </div>
+                        <div ng-if="vm.CurrentExercise.reps > 0">
+                           <reps-chrono
+                               exercise="vm.CurrentExercise"
+                               start="vm.startChrono"
+                               when-finish="vm.finished"></reps-chrono>
+                        </div>
                             <div class="clearfix"></div>
                         <div class="exercises">
                             <ul class="frise">

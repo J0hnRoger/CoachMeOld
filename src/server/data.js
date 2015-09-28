@@ -27,9 +27,15 @@ var data;
         return worker;
     }
     data.getWorker = getWorker;
+    function getLastRecord() {
+        var record = { "data": [{ "_id": "5608cd64b0fb023f29c2e2eb", "worker": "55eff8a0eb5d4c4c58deb2ff", "workout_date": "2015-09-14T00:00:00.000Z", "workout": ["55eff12af835d9b85836c590"], "appId": "coachcoach", "cobjectId": "workoutrecord", "__v": 0, "exercicesScore": "{55eff1bff835d9b85836c591 : 60, 55eff2baf835d9b85836c592 : 6, 55eff2d5f835d9b85836c593 : 8, 55eff337f835d9b85836c594 : 4 55eff3e9f835d9b85836c595 : 9 55eff430f835d9b85836c596 : 3 55f1d1bf9370b34c174328f7 : 5 55f1d20c9370b34c174328f8 : 4, 55f1d2839370b34c174328f9 : 3}", "exercisesScores": { "55eff1bff835d9b85836c591": "60", "55eff2baf835d9b85836c592": "6-6-6", "55eff2d5f835d9b85836c593": "8-7-6", "55eff337f835d9b85836c594": "4-4-4", "55eff3e9f835d9b85836c595": "9-6-4", "55eff430f835d9b85836c596": "3-9-2", "55f1d1bf9370b34c174328f7": "5-6-5", "55f1d20c9370b34c174328f8": "4-4-4", "55f1d2839370b34c174328f9": "3-4-3" }, "actions": { "comments": [], "ratings": { "users": [], "avg": 0, "total": 0 }, "votes": { "users_downvote": [], "users_upvote": [], "users": [], "total": 0 } }, "dt_update": "2015-09-28T21:22:05.380Z", "dt_create": "2015-09-28T05:17:24.390Z", "id": "5608cd64b0fb023f29c2e2eb" }] };
+        return record;
+    }
+    data.getLastRecord = getLastRecord;
     data.getPeople = getPeople;
     data.getWorker = getWorker;
     data.getWorkout = getWorkout;
+    data.getLastRecord = getLastRecord;
 })(data || (data = {}));
 module.exports = data;
 //# sourceMappingURL=data.js.map

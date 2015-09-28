@@ -16,7 +16,7 @@ router.get('/people', getPeople);
 router.get('/person/:id', getPerson);
 router.get('/cobject/v1/users/' + userTestId, getWorker);
 router.get('/cobject/v1/seance/' + workoutID , getWorkout);
-
+router.get('/cobject/v1/workoutrecord', getLastRecord);
 router.get('/*', notFoundMiddleware);
 
 module.exports = router;
@@ -47,4 +47,8 @@ function getWorker(req: express.Request, res: express.Response, next: any) {
 
 function getWorkout(req: express.Request, res: express.Response, next: any) {
     res.status(200).send(data.getWorkout());
+}
+
+function getLastRecord(req: express.Request, res: express.Response, next: any) {
+    res.status(200).send(data.getLastRecord());
 }

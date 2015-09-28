@@ -10,13 +10,15 @@ var app;
                 this.finished = function () {
                     _this.CurrentExercise = _this.CurrentWorkout.getNextExercise();
                     if (_this.CurrentExercise == undefined) {
-                        _this.logger.info("Exercise finished");
+                        _this.workoutservice.saveWorkout();
+                        _this.logger.info("Workout finished");
                         _this.CurrentWorkout.isFinished = true;
                     }
                     else {
                         _this.CurrentExercise.duration = 1;
                         _this.CurrentExercise.rest = 1;
-                        _this.CurrentExercise.restAfter = 1;
+                        _this.CurrentExercise.restAfter = 4;
+                        //this.CurrentExercise.lastReps = 2;
                         _this.logger.info("Exercise finished");
                     }
                 };
@@ -25,10 +27,14 @@ var app;
                         .then(function (workout) {
                         _this.CurrentWorkout = workoutservice.currentWorker.currentWorkout;
                         _this.CurrentExercise = _this.CurrentWorkout.currentExercise;
-                        _this.CurrentExercise.duration = 2;
+                        workoutservice.bindLastRecord()
+                            .then(function () {
+                            _this.workoutservice.saveWorkout();
+                        });
+                        //this.CurrentExercise.reps = 6;
+                        _this.CurrentExercise.duration = 1;
                         _this.CurrentExercise.rest = 1;
                         _this.CurrentExercise.restAfter = 1;
-                        _this.startChrono();
                     });
                 }
             }
