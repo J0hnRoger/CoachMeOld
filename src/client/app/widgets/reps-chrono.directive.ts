@@ -4,7 +4,9 @@ namespace app.widgets {
     interface IChronoScope {
         current : number;
         initialDuration : number;
-        state : { rest : boolean, lastRest : boolean, finished : boolean};
+        state : {   rest : boolean;
+                    lastRest : boolean;
+                };
         exercise : app.domain.Exercise;
         showRestButton : boolean;
         start() : void;
@@ -18,7 +20,7 @@ namespace app.widgets {
     //<chrono-reps duration="20" rest="25" reps="0" rounds="6"/>
     // Creates:
     class RepsChrono implements ng.IDirective {
-        static $inject: Array<string> = ['logger', '$interval'];
+
 
         templateUrl: string = 'app/widgets/reps-chrono.html';
         restrict: string = 'EA';
@@ -28,9 +30,10 @@ namespace app.widgets {
             'start' : '='
         };
 
+        static $inject: Array<string> = ['logger', '$interval'];
         constructor(private logger : blocks.logger.Logger, private $interval : ng.IIntervalService) {}
 
-        link = (scope : IChronoScope, element : ng.IAugmentedJQuery, attrs : ng.IAttributes ) => {
+        link = (scope : IChronoScope, element : ng.IAugmentedJQuery ) => {
             var stopTime : ng.IPromise<any>;
 
             scope.state = {
@@ -47,7 +50,6 @@ namespace app.widgets {
                     if (scope.exercise.rest == 0){
                         scope.exercise.rest = scope.initialRest;
 
-                        //emettre sonnerie
                         //Finished conditions
                         if (scope.state.lastRest)
                         {

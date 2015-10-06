@@ -18,7 +18,7 @@ var app;
                     'whenFinish': '=',
                     'start': '='
                 };
-                this.link = function (scope, element, attrs) {
+                this.link = function (scope, element) {
                     var stopTime;
                     scope.state = {
                         rest: true,
@@ -32,7 +32,6 @@ var app;
                             scope.exercise.rest = scope.exercise.rest - 1;
                             if (scope.exercise.rest == 0) {
                                 scope.exercise.rest = scope.initialRest;
-                                //emettre sonnerie
                                 //Finished conditions
                                 if (scope.state.lastRest) {
                                     scope.stop();
