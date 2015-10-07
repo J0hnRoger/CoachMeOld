@@ -29,7 +29,7 @@ var app;
                         _this.CurrentExercise = _this.CurrentWorkout.currentExercise;
                         workoutservice.bindLastRecord()
                             .then(function () {
-                            _this.workoutservice.saveWorkout();
+                            workoutservice.saveWorkout();
                         });
                         //this.CurrentExercise.reps = 6;
                         _this.CurrentExercise.duration = 1;

@@ -19,13 +19,13 @@ var app;
                 {
                     state: 'dashboard',
                     config: {
-                        url: '/',
+                        url: '/dashboard',
                         templateUrl: 'app/dashboard/dashboard.html',
                         controller: 'DashboardController',
                         controllerAs: 'vm',
                         title: 'dashboard',
                         settings: {
-                            nav: 1,
+                            nav: 2,
                             content: '<i class="fa fa-dashboard"></i> Dashboard'
                         }
                     }

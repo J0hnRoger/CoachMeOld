@@ -1,10 +1,10 @@
 var app;
 (function (app) {
-    var admin;
-    (function (admin) {
+    var authentification;
+    (function (authentification) {
         'use strict';
         angular
-            .module('app.admin')
+            .module('app.authentification')
             .config(configureStates);
         configureStates.$inject = ['$stateProvider'];
         /* @ngInject */
@@ -17,21 +17,21 @@ var app;
         function getStates() {
             return [
                 {
-                    state: 'admin',
+                    state: 'authentification',
                     config: {
-                        url: '/admin',
-                        templateUrl: 'app/admin/admin.html',
-                        controller: 'AdminController',
+                        url: '/',
+                        templateUrl: 'app/authentification/login.html',
+                        controller: 'loginController',
                         controllerAs: 'vm',
-                        title: 'Admin',
+                        title: 'Authentification',
                         settings: {
-                            nav: 5,
-                            content: '<i class="fa fa-lock"></i> Admin'
+                            nav: 1,
+                            content: '<i class="fa fa-sign-in"></i> Login'
                         }
                     }
                 }
             ];
         }
-    })(admin = app.admin || (app.admin = {}));
+    })(authentification = app.authentification || (app.authentification = {}));
 })(app || (app = {}));
-//# sourceMappingURL=admin.route.js.map
+//# sourceMappingURL=login.routes.js.map

@@ -1,8 +1,8 @@
-namespace app.dashboard {
+namespace app.authentification {
     'use strict';
 
     angular
-        .module('app.dashboard')
+        .module('app.authentification')
         .config(configureStates);
 
     configureStates.$inject = ['$stateProvider'];
@@ -17,16 +17,16 @@ namespace app.dashboard {
     function getStates() {
         return [
             {
-                state: 'dashboard',
+                state: 'authentification',
                 config: {
-                    url: '/dashboard',
-                    templateUrl: 'app/dashboard/dashboard.html',
-                    controller: 'DashboardController',
+                    url: '/',
+                    templateUrl: 'app/authentification/login.html',
+                    controller: 'loginController',
                     controllerAs: 'vm',
-                    title: 'dashboard',
+                    title: 'Authentification',
                     settings: {
-                        nav: 2,
-                        content: '<i class="fa fa-dashboard"></i> Dashboard'
+                        nav: 1,
+                        content: '<i class="fa fa-sign-in"></i> Login'
                     }
                 }
             }

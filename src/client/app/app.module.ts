@@ -7,6 +7,7 @@ namespace app {
         'app.admin',
         'app.dashboard',
         'app.workout',
-        'app.layout'
+        'app.layout',
+        'app.authentification'
     ])
 }

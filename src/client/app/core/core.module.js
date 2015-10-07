@@ -7,7 +7,8 @@ var app;
             .module('app.core', [
             'ngAnimate', 'ngSanitize',
             'blocks.exception', 'blocks.logger', 'blocks.router',
-            'ui.router', 'ngplus'
+            'ui.router', 'ngplus',
+            'stamplay.core'
         ]);
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));

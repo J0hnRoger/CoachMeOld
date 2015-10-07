@@ -13,7 +13,7 @@ namespace app.workout {
 						this.CurrentExercise = this.CurrentWorkout.currentExercise;
                         workoutservice.bindLastRecord()
                             .then( () => {
-                                this.workoutservice.saveWorkout();
+                                workoutservice.saveWorkout();
                             });
                         //this.CurrentExercise.reps = 6;
                         this.CurrentExercise.duration = 1;
@@ -22,7 +22,6 @@ namespace app.workout {
                     });
             }
         }
-
 
 		finished = () =>  {
 			this.CurrentExercise = this.CurrentWorkout.getNextExercise();

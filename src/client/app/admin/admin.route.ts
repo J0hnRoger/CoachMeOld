@@ -25,7 +25,7 @@ namespace app.admin {
                     controllerAs: 'vm',
                     title: 'Admin',
                     settings: {
-                        nav: 2,
+                        nav: 5,
                         content: '<i class="fa fa-lock"></i> Admin'
                     }
                 }

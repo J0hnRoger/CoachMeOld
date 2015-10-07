@@ -44,11 +44,10 @@ namespace app.domain {
         }
 
         getExercisesScores() {
-            return this.exercises.map( (exercise) =>  {
-                return { "154484" : exercise.lastReps.join('-')}
-        });
-    }
-	}
+            return {"55eff1bff835d9b85836c591":"60","55eff2baf835d9b85836c592":"6-6-6","55eff2d5f835d9b85836c593":"8-7-6","55eff337f835d9b85836c594":"4-4-4","55eff3e9f835d9b85836c595":"9-6-4","55eff430f835d9b85836c596":"3-9-2","55f1d1bf9370b34c174328f7":"5-6-5"};
+        }
+    };
+
 
 	export class Familly {
 		static colors : any = {
